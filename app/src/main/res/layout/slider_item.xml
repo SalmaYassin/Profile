@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:id="@+id/imageSlide"
+    android:layout_margin="@dimen/pageMarginAndOffset"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/imageSlide">
+    android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="240dp"
         android:layout_height="@dimen/height_190"
-        app:cardCornerRadius="20dp"
+        android:layout_gravity="center"
         android:layout_margin="@dimen/margin_8"
-        android:layout_gravity="center">
+        app:cardCornerRadius="20dp"
+        app:cardUseCompatPadding="true">
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             android:background="@color/color_f8f6f7">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:scaleType="centerCrop"
                 android:id="@+id/imageview_slide"
-                android:src="@drawable/embridory_art"/>
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="7"
+                android:scaleType="centerCrop"
+                android:src="@drawable/embridory_art" />
 
             <TextView
                 android:id="@+id/tv_slide"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:layout_height="0dp"
+                android:layout_weight="3"
+                android:layout_below="@id/imageview_slide"
                 android:layout_centerHorizontal="true"
+                android:fontFamily="cursive"
                 android:paddingTop="@dimen/padding_5"
                 android:text="Embroidery Art"
-                android:textStyle="bold"
                 android:textColor="@color/color_9a7c84"
                 android:textSize="25sp"
-                android:fontFamily="cursive"
-                android:layout_below="@id/imageview_slide"
-                />
+                android:textStyle="bold" />
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

@@ -186,4 +186,7 @@
     <dimen name="width_25">25dp</dimen>
     <dimen name="height_25">25dp</dimen>
     <dimen name="margin_4">4dp</dimen>
+    <dimen name="pageMargin">30dp</dimen>
+    <dimen name="offset">10dp</dimen>
+    <dimen name="pageMarginAndOffset">40dp</dimen>
 </resources>
