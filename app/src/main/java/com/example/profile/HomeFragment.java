@@ -62,7 +62,24 @@ public class HomeFragment extends Fragment {
         showSlider(rootView);
         viewPager2.setOffscreenPageLimit(3);
         viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+    }
 
+    @Override
+    public void onPageSelected(int position) {
+        super.onPageSelected(position);
+        datasider.get(position).getCategoryname();
+        Log.d("PAGE_SELECTED", "onPageSelected: "+position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+        super.onPageScrollStateChanged(state);
+    }
+});
         CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
         compositePageTransformer.addTransformer(new MarginPageTransformer(dpToPx(50)));
         compositePageTransformer.addTransformer(new ViewPager2.PageTransformer() {
