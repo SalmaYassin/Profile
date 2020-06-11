@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,7 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment {
 
@@ -41,6 +41,7 @@ public class HomeFragment extends Fragment {
     private ViewPager viewPager;
     private ViewPagerAdapter viewadapter;
     Map<String, String> categoriesMap;
+    private MainViewModel mainViewModel;
 
     public HomeFragment() {
     }
@@ -57,6 +58,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        initViewModel();
         tabLayout = rootView.findViewById(R.id.tablayout);
         viewPager = rootView.findViewById(R.id.viewpager);
         viewadapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
@@ -80,7 +82,7 @@ public class HomeFragment extends Fragment {
                 super.onPageSelected(position);
                 /*1-get key of current position from keySet
                  * 2-set adapter with the key*/
-                viewadapter.setCatID((String) categoriesMap.keySet().toArray()[position]);
+                mainViewModel.setCategoryID((String) categoriesMap.keySet().toArray()[position]);
                 Log.d("PAGE_SELECTED", "onPageSelected: " + position);
             }
 
@@ -188,6 +190,10 @@ public class HomeFragment extends Fragment {
 //        recyclerViewOtherCateg.setAdapter(adapterOtherCategory);
 
         return rootView;
+    }
+
+    private void initViewModel() {
+        mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
     }
 
     private void showSlider(View rootView) {

@@ -16,7 +16,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
 
 
     public ViewPagerAdapter(FragmentManager fm) {
-        super(fm);
+        super(fm,BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
 
     }
 
@@ -27,13 +27,13 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            CategoryFragment categoryFragment = new CategoryFragment();
+            ProductsFragment productsFragment = new ProductsFragment();
             Bundle arguments0 = new Bundle();
             arguments0.putString(Constants.CATEGORY_KEY, catID);
             Log.d("ARGUMENTS", "CAT_ID: "+ catID);
 
-            categoryFragment.setArguments(arguments0);
-            return categoryFragment;/*todo pass catID */
+            productsFragment.setArguments(arguments0);
+            return productsFragment;/*todo pass catID */
         } else if (position == 1) {
             ShopFragment shopFragment = new ShopFragment();
             Bundle arguments1 = new Bundle();
