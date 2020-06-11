@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardview"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_180"
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_100"
             android:scaleType="centerCrop"
-            android:src="@drawable/photo1" />
+            tools:src="@drawable/photo1" />
 
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -39,7 +39,7 @@
             android:layout_marginStart="@dimen/marginStart_15"
             android:layout_marginTop="@dimen/marginTop_10"
             android:layout_marginBottom="@dimen/marginBottom_15"
-            android:src="@drawable/icon3" />
+            tools:src="@drawable/icon3" />
 
 
         <TextView
