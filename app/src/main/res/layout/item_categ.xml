@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
     <androidx.cardview.widget.CardView
         android:layout_width="@dimen/width_160"
@@ -26,7 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/height_110"
             android:scaleType="centerCrop"
-            tools:src="@drawable/photo1" />
+            android:src="@drawable/photo1" />
 
         <ImageButton
             android:id="@+id/iconImage"
