@@ -2,7 +2,6 @@ package com.example.profile;
 
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,10 +24,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class HomeFragment extends Fragment {
 
@@ -41,6 +40,7 @@ public class HomeFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter viewadapter;
+    Map<String, String> categoriesMap;
 
     public HomeFragment() {
     }
@@ -48,9 +48,11 @@ public class HomeFragment extends Fragment {
     public static int pxToDp(int px) {
         return (int) (px / Resources.getSystem().getDisplayMetrics().density);
     }
+
     public static int dpToPx(int dp) {
         return (int) (dp * Resources.getSystem().getDisplayMetrics().density);
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -67,41 +69,34 @@ public class HomeFragment extends Fragment {
         showSlider(rootView);
         viewPager2.setOffscreenPageLimit(3);
         viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-    }
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+            }
 
-    @Override
-    public void onPageSelected(int position) {
-        super.onPageSelected(position);
-        //viewPager2.setCurrentItem(1 );
-        if ( position == 0 ){
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                /*1-get key of current position from keySet
+                 * 2-set adapter with the key*/
+                viewadapter.setCatID((String) categoriesMap.keySet().toArray()[position]);
+                Log.d("PAGE_SELECTED", "onPageSelected: " + position);
+            }
 
-        }else if ( position == 1 ){
-
-           }if ( position == 2 ){
-
-        }if ( position == 3 ){
-
-        }
-
-        Log.d("PAGE_SELECTED", "onPageSelected: "+position);
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-        super.onPageScrollStateChanged(state);
-    }
-});
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                super.onPageScrollStateChanged(state);
+            }
+        });
 
 
-         CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
         compositePageTransformer.addTransformer(new MarginPageTransformer(40));
         compositePageTransformer.addTransformer(new ViewPager2.PageTransformer() {
             float pageMargin = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
             float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
+
             @Override
             public void transformPage(@NonNull View page, float position) {
                 String TAG = "VIEWPAGER_POS";
@@ -202,11 +197,14 @@ public class HomeFragment extends Fragment {
         dbReferenceslider.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                categoriesMap = (Map<String, String>) dataSnapshot.getValue();
+
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
                     SliderItemModel item = snapshot.getValue(SliderItemModel.class);
                     datasider.add(item);
                 }
-                 sliderAdapter = new SliderAdapter(datasider, viewPager2);
+                sliderAdapter = new SliderAdapter(datasider, viewPager2);
                 viewPager2.setAdapter(sliderAdapter);
 
             }
@@ -222,10 +220,10 @@ public class HomeFragment extends Fragment {
         dbReferences.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int i = 0 ;
+                int i = 0;
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     viewadapter.setCatID(snapshot.getKey());
-                    Log.d("FIREBASE", "ID OF POS: "+ i + snapshot.getKey());
+                    Log.d("FIREBASE", "ID OF POS: " + i + snapshot.getKey());
                     i++;
                 }
 
@@ -238,9 +236,6 @@ public class HomeFragment extends Fragment {
 
             }
         });
-
-
-
 
 
     }
