@@ -1,5 +1,5 @@
 package com.example.profile;
 
 class Constants {
-    public static String PRODUCT_KEY="PROD_KEY";
+    public static String CATEGORY_KEY="CATEG_KEY";
 }

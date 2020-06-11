@@ -2,6 +2,7 @@ package com.example.profile;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -41,6 +44,7 @@ public class HomeFragment extends Fragment {
 
     public HomeFragment() {
     }
+
     public static int pxToDp(int px) {
         return (int) (px / Resources.getSystem().getDisplayMetrics().density);
     }
@@ -56,13 +60,14 @@ public class HomeFragment extends Fragment {
         viewadapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setAdapter(viewadapter);
         tabLayout.setupWithViewPager(viewPager);
+        viewadapter.setCatID("categoryID1");
 
 
         viewPager2 = rootView.findViewById(R.id.viewPagerSlider);
         showSlider(rootView);
         viewPager2.setOffscreenPageLimit(3);
         viewPager2.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         super.onPageScrolled(position, positionOffset, positionOffsetPixels);
@@ -71,7 +76,17 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
     @Override
     public void onPageSelected(int position) {
         super.onPageSelected(position);
-        datasider.get(position).getCategoryname();
+        //viewPager2.setCurrentItem(1 );
+        if ( position == 0 ){
+
+        }else if ( position == 1 ){
+
+           }if ( position == 2 ){
+
+        }if ( position == 3 ){
+
+        }
+
         Log.d("PAGE_SELECTED", "onPageSelected: "+position);
     }
 
@@ -80,8 +95,10 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
         super.onPageScrollStateChanged(state);
     }
 });
-        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
-        compositePageTransformer.addTransformer(new MarginPageTransformer(dpToPx(50)));
+
+
+         CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+        compositePageTransformer.addTransformer(new MarginPageTransformer(40));
         compositePageTransformer.addTransformer(new ViewPager2.PageTransformer() {
             float pageMargin = getResources().getDimensionPixelOffset(R.dimen.pageMargin);
             float pageOffset = getResources().getDimensionPixelOffset(R.dimen.offset);
@@ -102,15 +119,6 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
                     page.setTranslationX(myOffset);
                 }
 
-
-
-
-                float r = 1 - Math.abs(position);
-                float scale = 0.085f + r * 0.15f;
-                Log.d(TAG, "transformPagePOS: " + position);
-                Log.d(TAG, "transformPageRADIUS: " + r);
-                Log.d(TAG, "transformPageVALUE: " + scale);
-//                page.setScaleY(scale);
             }
         });
         viewPager2.setPageTransformer(compositePageTransformer);
@@ -209,6 +217,32 @@ viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 
             }
         });
+
+        DatabaseReference dbReferences = FirebaseDatabase.getInstance().getReference("categories");
+        dbReferences.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int i = 0 ;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    viewadapter.setCatID(snapshot.getKey());
+                    Log.d("FIREBASE", "ID OF POS: "+ i + snapshot.getKey());
+                    i++;
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+
+
+
+
     }
 
 

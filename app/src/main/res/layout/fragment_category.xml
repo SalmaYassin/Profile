@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/linear_fragment_container"
     >
 
 
@@ -12,11 +13,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/padding_10"
-        android:paddingTop="@dimen/padding_10"
         android:paddingRight="@dimen/padding_15"
         >
 
     </androidx.recyclerview.widget.RecyclerView>
 
 
-</LinearLayout>
+</FrameLayout>

@@ -7,7 +7,6 @@
     android:layout_height="@dimen/height_180"
     android:layout_marginRight="@dimen/margin_15"
     android:layout_marginLeft="@dimen/margin_15"
-    android:layout_marginTop="@dimen/margin_10"
     android:layout_marginBottom="@dimen/margin_10"
     android:paddingStart="@dimen/paddingStart_4"
     android:clickable="true"

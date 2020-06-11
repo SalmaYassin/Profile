@@ -5,9 +5,11 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,7 @@ public class CategoryFragment extends Fragment {
     private RecyclerView recyclerView;
     private ArrayList<CategoryitemModel> data;
     private DatabaseReference dbReference;
+    Bundle bundle ;
 
 
     public CategoryFragment() {
@@ -51,10 +54,14 @@ public class CategoryFragment extends Fragment {
     private void showCategories(View rootView) {
         recyclerView = rootView.findViewById(R.id.recyclerview_id);
          data = new ArrayList<>();
+         bundle = this.getArguments();
+         String id = bundle.getString(Constants.CATEGORY_KEY);
+        Log.d("ID", "CAT_ID: "+ id);
+
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
         dbReference = FirebaseDatabase.getInstance().getReference("products");
         Query query = FirebaseDatabase.getInstance().getReference("products")
-                .orderByChild("categoryid").equalTo("categoryID1");
+                .orderByChild("categoryid").equalTo(id);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -76,24 +83,5 @@ public class CategoryFragment extends Fragment {
         });
     }
 
-//    private void initializeFavItemRecyclerView(View v) {
-//        recyclerView = v.findViewById(R.id.recyclerview_id);
-//        ArrayList<CategoryitemModel> data = getList();
-//        CategoryRecycAdapter Adapter = new CategoryRecycAdapter(data);
-//        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
-//        recyclerView.setAdapter(Adapter);
-//    }
-//
-//
-//    private ArrayList<CategoryitemModel> getList() {
-//        ArrayList<CategoryitemModel> data = new ArrayList<CategoryitemModel>();
-//        data.add(new CategoryitemModel("Full Item Name", "150$", R.drawable.photo1, R.drawable.fav_icon));
-//        data.add(new CategoryitemModel("Full Item Name", "150$", R.drawable.photo2, R.drawable.fav_icon));
-//        data.add(new CategoryitemModel("Full Item Name", "150$", R.drawable.photo5, R.drawable.fav_icon));
-//        data.add(new CategoryitemModel("Full Item Name", "150$", R.drawable.photo4, R.drawable.fav_icon));
-//        data.add(new CategoryitemModel("Full Item Name", "150$", R.drawable.photo3, R.drawable.fav_icon));
-//        data.add(new CategoryitemModel("Full Item Name", "150$", R.drawable.photo1, R.drawable.fav_icon));
-//        return data;
-//    }
 
 }
