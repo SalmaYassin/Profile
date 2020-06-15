@@ -1,29 +1,36 @@
 package com.example.profile;
 
-public class CategoryitemModel  {
-    String name ;
-    String price ;
-    String image ;
-    String categoryid ;
-    String img1;
-    String img2 ;
-    String img3;
-    String descryption;
-    String size ;
-    String materials;
+import com.google.firebase.database.Exclude;
+
+public class ProductitemModel {
+    private String key ;
+    private String name ;
+    private String price ;
+    private String image ;
+    private String categoryid ;
+    private String img1;
+    private String img2 ;
+    private  String img3;
+    private String descryption;
+    private String size ;
+    private String materials;
+    private static boolean fav = false ;
 
 
 
-    public CategoryitemModel() {
+    public ProductitemModel() {
     }
 
-    public CategoryitemModel(String name, String price, String image,
-                             String categoryid, String img1,
-                             String img2, String img3, String descryption, String size, String materials) {
+    public ProductitemModel(String name, String price, String image,
+                            String categoryid, String img1, boolean fav ,
+                            String img2, String img3, String descryption,
+                            String size, String materials , String key) {
+        this.key = key;
         this.name = name;
         this.price = price;
         this.image = image;
         this.categoryid = categoryid;
+        this.fav=fav;
         this.img1 = img1;
         this.img2 = img2;
         this.img3 = img3;
@@ -32,11 +39,27 @@ public class CategoryitemModel  {
         this.materials = materials;
     }
 
-    public CategoryitemModel(String name, String price, String image) {
+    public ProductitemModel(String name, String price, String image) {
         this.name = name;
         this.price = price;
         this.image = image;
 
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public boolean isFav() {
+        return fav;
+    }
+
+    public void setFav(boolean fav) {
+        this.fav = fav;
     }
 
     public String getCategoryid() {

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,13 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 
 /**
@@ -30,10 +39,12 @@ import java.util.ArrayList;
  */
 public class ProductsFragment extends Fragment {
     private RecyclerView recyclerView;
-    private ArrayList<CategoryitemModel> data;
+    private ArrayList<ProductitemModel> data;
     private DatabaseReference dbReference;
     Bundle bundle;
     MainViewModel mainViewModel;
+
+    Map<String, String> productsMap;
 
 
     public ProductsFragment() {
@@ -47,7 +58,6 @@ public class ProductsFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_category, container, false);
         showCategories(rootView);
-        //initializeFavItemRecyclerView(rootView);
         return rootView;
     }
 
@@ -71,11 +81,14 @@ public class ProductsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 data.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    CategoryitemModel categ = snapshot.getValue(CategoryitemModel.class);
+                    ProductitemModel categ = snapshot.getValue(ProductitemModel.class);
                     data.add(categ);
+
                 }
-                CategoryRecycAdapter Adapter = new CategoryRecycAdapter(data);
+                ProductRecycAdapter Adapter = new ProductRecycAdapter( getContext() ,data , ListenerProducts , ListenerFavourite);
                 recyclerView.setAdapter(Adapter);
+
+
             }
 
             @Override
@@ -97,5 +110,43 @@ public class ProductsFragment extends Fragment {
         });
     }
 
+    ProductRecycAdapter.ItemClickListener ListenerProducts = new ProductRecycAdapter.ItemClickListener() {
+        @Override
+        public void onItemClick(ProductitemModel item) {
+            Toast.makeText(getActivity(), "item Clicked", Toast.LENGTH_SHORT).show();
+            dbReference = FirebaseDatabase.getInstance().getReference("RecentViewed");
+            String key = dbReference.push().getKey();
+            dbReference.child(key).setValue(item).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+//                    Toast.makeText(getActivity() , "Product Added Succcesfully.." , Toast.LENGTH_LONG).show();
+                }
+            });
 
+
+
+        }
+    };
+
+    ProductRecycAdapter.FavouriteClickListener ListenerFavourite = new ProductRecycAdapter.FavouriteClickListener() {
+        @Override
+        public void onFavouriteClicked(final int position, final boolean isFav) {
+            dbReference = FirebaseDatabase.getInstance().getReference("products");
+            dbReference.child(data.get(position).getKey()).child("favourite").setValue(isFav)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getActivity() , "Product favourite Succcesfully.." , Toast.LENGTH_LONG).show();
+
+                }
+            });
+
+
+//                    productsMap = (Map<String, String>) dataSnapshot.getValue();
+//                    Log.d("MAP", "KEY: " + productsMap.keySet().toArray()[position].toString());
+//                    dbReference.child(productsMap.keySet().toArray()[position].toString()).child("favourite")
+//                            .setValue(isFav);
+
+        }
+    };
 }

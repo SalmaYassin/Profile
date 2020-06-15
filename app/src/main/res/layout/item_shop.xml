@@ -85,7 +85,7 @@
             android:layout_marginRight="@dimen/margin_10"
             android:layout_marginTop="@dimen/margin_10"
             android:layout_below="@id/shopImage"
-            android:src="@drawable/fav_icon"/>
+            android:src="@drawable/ic_favorite_empty"/>
 
 
         <ImageButton

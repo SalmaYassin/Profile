@@ -85,7 +85,7 @@
             android:layout_width="@dimen/width_25"
             android:layout_height="@dimen/height_25"
             android:layout_gravity="right"
-            android:src="@drawable/ic_favorite_black_24dp"
+            android:src="@drawable/ic_favorite_empty"
             android:background="@android:color/transparent"/>
 
 

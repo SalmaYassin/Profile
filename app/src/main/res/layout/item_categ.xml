@@ -40,7 +40,7 @@
             android:padding="@dimen/padding_5"
             android:paddingEnd="@dimen/paddingEnd_4"
             android:paddingRight="@dimen/paddingRight_4"
-            android:src="@drawable/fav_icon" />
+            android:src="@drawable/ic_favorite_empty" />
 
 
 
@@ -92,11 +92,10 @@
             android:id="@+id/share_product"
             android:layout_width="@dimen/width_25"
             android:layout_height="@dimen/height_30"
-            android:background="@android:color/transparent"
+            android:background="@color/color_F1EDED"
             android:gravity="start|top"
             android:src="@drawable/ic_share"
-            android:layout_below="@+id/itemName"
-            android:layout_marginRight="@dimen/margin_5"
+            android:layout_below="@+id/ratingBar"
             android:layout_alignParentRight="true"/>
 
     </RelativeLayout>

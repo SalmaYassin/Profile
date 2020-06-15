@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +32,8 @@ public class ShopFragment extends Fragment {
     ArrayList<ShopitemModel> data;
     private DatabaseReference dbReference;
     Bundle bundle1 ;
+    MainViewModel mainViewModel;
+
 
 
 
@@ -53,13 +57,20 @@ public class ShopFragment extends Fragment {
         bundle1 = getArguments();
         String idshop = bundle1.getString(Constants.CATEGORY_KEY);
         Log.d("ID_SHOP", "CAT_ID: "+idshop);
+        initViewModel();
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        getShopByCategory(idshop);
+            }
+
+    private void getShopByCategory(String catId) {
         dbReference = FirebaseDatabase.getInstance().getReference("shops");
         Query query = FirebaseDatabase.getInstance().getReference("shops")
-                .orderByChild("categoryid").equalTo(idshop);
+                .orderByChild("categoryid").equalTo(catId);
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                data.clear();
+
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     ShopitemModel shops = snapshot.getValue(ShopitemModel.class);
                     data.add(shops);
@@ -77,8 +88,17 @@ public class ShopFragment extends Fragment {
             }
         });
 
-    }
 
+    }
+    void initViewModel() {
+        mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
+        mainViewModel.catId.observe(getActivity(), new Observer<String>() {
+            @Override
+            public void onChanged(String newCatID) {
+                getShopByCategory(newCatID);
+            }
+        });
+    }
 
 
 }

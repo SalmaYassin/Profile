@@ -9,13 +9,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
-public class RVAdapterCategory extends RecyclerView.Adapter<RVAdapterCategory.ItemViewHolder > {
-    private ArrayList<ItemModel> itemList;
+public class RVAdapterSimilarItem extends RecyclerView.Adapter<RVAdapterSimilarItem.ItemViewHolder > {
+    private ArrayList<ProductitemModel> itemList;
     private ItemClickListener onItemClickListener;
 
-    public RVAdapterCategory(ArrayList<ItemModel> itemList, ItemClickListener onItemClickListener) {
+    public RVAdapterSimilarItem(ArrayList<ProductitemModel> itemList, ItemClickListener onItemClickListener) {
         this.itemList = itemList;
         this.onItemClickListener = onItemClickListener;
     }
@@ -31,7 +33,11 @@ public class RVAdapterCategory extends RecyclerView.Adapter<RVAdapterCategory.It
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+        Picasso.get().load(itemList.get(position).getImage()).into(holder.itemImage);
+        holder.itemName.setText(itemList.get(position).getName());
+        holder.price.setText(itemList.get(position).getPrice());
         holder.setDatainView(itemList.get(position));
+
 
     }
 
@@ -61,11 +67,7 @@ public class RVAdapterCategory extends RecyclerView.Adapter<RVAdapterCategory.It
             price=(TextView)itemView.findViewById(R.id.price);
         }
 
-        public void setDatainView(final ItemModel item) {
-
-            itemImage.setImageResource(item.getImageResourceId());
-            itemName.setText(item.getItemName());
-            price.setText(item.getPrice());
+        public void setDatainView(final ProductitemModel item) {
             rootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -76,6 +78,6 @@ public class RVAdapterCategory extends RecyclerView.Adapter<RVAdapterCategory.It
     }
 
     interface ItemClickListener {
-        void onItemClick(ItemModel item);
+        void onItemClick(ProductitemModel item);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.profile;
 
 public  class SliderItemModel {
+    private  String key ;
     private int numOfShops;
     private int numOfReviews;
     private int numOfProducts;
@@ -10,12 +11,21 @@ public  class SliderItemModel {
     public SliderItemModel() {
     }
 
-    public SliderItemModel(int numOfShops, int numOfReviews, int numOfProducts, String image, String categoryname) {
+    public SliderItemModel(int numOfShops, int numOfReviews, int numOfProducts, String image,String key , String categoryname) {
         this.numOfShops = numOfShops;
         this.numOfReviews = numOfReviews;
         this.numOfProducts = numOfProducts;
+        this.key = key ;
         this.image = image;
         this.categoryname = categoryname;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public int getNumOfShops() {
